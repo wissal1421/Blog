@@ -14,7 +14,24 @@ El programa sigue una máquina de estados finitos (FSM) con los siguientes estad
   - FORWARD: Este es el ultimo estado al que pasa y lo hace cuando ha girado lo suficiente, consiste en ir hacia delante 5 segundos, durante este tiempo no debe encontrar nngun obstaculo y si lo hace volvera al estado BACKWARD, de no haber objeto, comenzara a hacer espirales nuevamente
 
 ## Lógica del autómata
+El corazón del sistema es el bucle principal que actualiza las velocidades según el estado actual del robot:
+```python
 
+while True:
+    if state == FORWARD:
+        ...
+    elif state == BACKWARD:
+        ...
+    elif state == TURNING:
+        ...
+    elif state == AVOIDING_OBSTACLE:
+        ...
+    
+    HAL.setV(vel_v)
+    HAL.setW(vel_w)
+    Frequency.tick()
+
+```
 
 
 
