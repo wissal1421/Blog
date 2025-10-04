@@ -104,9 +104,23 @@ def collides():
         return False
 
 ````
-Pese a que con la informacion que conoce podria devolver el lado mas vacio el mas ocupado, decidi separa esa parte en otra función llamada analyze_laser_data().
+Pese a que con la informacion que conoce podria devolver el lado mas vacio o el mas ocupado, decidi separar esa parte en otra función llamada analyze_laser_data().
 
+## AVOIDING_OBSTACLE
+Este comportamiento me generó grandes conflictos porque no sabia si usar angulos aleatorios o tiempos aleatorios para que el algoritmo tuviera aletoriedad. Al final me decidi por usar tiempos aleatorios ya que simplificaban muchisimo el algoritmo, tras esto se me ocurrió que en vez de ponerlo a girar a un lado aleatorio en un tiempo aleatorio, que analizara que lado estueviera mas vacio para girar, de forma que la probabilidad de chocarse contra otro obstáculo sea menor:
+````python
 
+if direction == "LEFT":
+                    vel_v = 0
+                    vel_w = 1
+                elif direction == "RIGHT":
+                    vel_v = 0
+                    vel_w = -1
+                else:
+                    vel_v = 0
+                    vel_w = 1
+
+````
 
 
 
