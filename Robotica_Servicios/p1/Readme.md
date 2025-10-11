@@ -82,6 +82,7 @@ def pixel_to_world(u, v):
 ---
 
 ## Estado PLAN
+
 El estado PLAN es el encargado de construir el recorrido completo del robot por el entorno.
 Su objetivo es explorar todas las celdas libres mientras va marcando su progreso, detectando posibles caminos de retorno y gestionando los puntos críticos.
 
@@ -133,6 +134,7 @@ for n in free_neighbors[1:]:
 ```
 
 ### 3. Manejo de retornos y puntos críticos
+
 Cuando una celda no tiene vecinos libres, se considera crítica, y el sistema busca una celda de retorno desde el stack return_cells.
 En ese caso, pasa al estado BFS_PLAN para planificar un camino hasta ella:
 ```python
@@ -154,6 +156,7 @@ Si no quedan celdas de retorno, significa que el entorno ya se ha explorado comp
 ---
 
 ## Estado BFS_PLAN
+
 Cuando el robot se queda sin vecinos libres durante la fase de planificación (PLAN), necesita encontrar una ruta hacia alguna celda de retorno pendiente.
 Ahí entra en juego BFS_PLAN, que usa una búsqueda en anchura (BFS) para construir el camino más corto posible hasta esa celda.
 
@@ -165,6 +168,24 @@ Buscamos el camino más corto desde la celda actual hasta ret_target, lo reconst
     Finalmente, actualizamos cell = ret_target y volvemos al estado PLAN para seguir explorando.
 
 ---
+
+## Estado MOVE
+
+Una vez que el plan completo está definido, pasamos al estado MOVE, donde el robot ejecuta físicamente el recorrido.
+Aquí es donde realmente se ve el resultado de toda la planificación: el robot empieza a moverse celda a celda siguiendo la ruta generada. El pseudocódigo de este estado quedaría así:
+
+    1. Pintamos la celda actual como VISITED, usando la posición real del robot en el mundo (HAL.getPose3d()).
+    2. Seleccionamos el objetivo actual del plan (target = plan[-1]) y calculamos cuántas celdas puede avanzar en línea recta usando cells_in_between_straight().Esto optimiza el movimiento evitando giros innecesarios.
+    3. Ejecutamos el movimiento hacia la celda objetivo con move_to_cell(), que utiliza control PID lineal y angular para avanzar de manera suave y precisa.
+    4. Actualizamos el índice en el plan una vez alcanzada la celda.
+
+
+---
+
+## Video de muestra
+
+
+
 
 
 
