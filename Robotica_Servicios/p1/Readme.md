@@ -151,3 +151,21 @@ if return_cells:
 ```
 Si no quedan celdas de retorno, significa que el entorno ya se ha explorado completamente, y el plan pasa al estado MOVE para ejecutar el recorrido final.
 
+---
+
+## Estado BFS_PLAN
+Cuando el robot se queda sin vecinos libres durante la fase de planificación (PLAN), necesita encontrar una ruta hacia alguna celda de retorno pendiente.
+Ahí entra en juego BFS_PLAN, que usa una búsqueda en anchura (BFS) para construir el camino más corto posible hasta esa celda.
+
+Buscamos el camino más corto desde la celda actual hasta ret_target, lo reconstruimos y lo insertamos directamente en el plan existente, de manera que el recorrido siga siendo coherente y sin saltos, el pseudocódigo quedaría así:
+
+    1. Marcamos la celda objetivo (RETURN_CELL) en el mapa para visualizar hacia dónde queremos volver.
+    2. Sacamos una celda de la cola (q.popleft()) y comprobamos si es el destino (ret).
+    3. Si lo es, reconstruimos el camino usando el diccionario parent, lo invertimos y lo insertamos en el plan principal justo después de la celda desde la que veníamos (origin_cell).
+    Finalmente, actualizamos cell = ret_target y volvemos al estado PLAN para seguir explorando.
+
+---
+
+
+
+
