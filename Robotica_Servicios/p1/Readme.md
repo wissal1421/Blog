@@ -183,6 +183,7 @@ Aquí es donde realmente se ve el resultado de toda la planificación: el robot 
 ---
 
 ## Video de muestra
+[![Mira el video](https://drive.google.com/file/d/18bBb0hL_x44h9YfiLsfxGHGZEqfumdWC/view?usp=sharing)](https://drive.google.com/file/d/18bBb0hL_x44h9YfiLsfxGHGZEqfumdWC/view?usp=sharing)
 
 
 
