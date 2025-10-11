@@ -47,3 +47,35 @@ kernel = np.ones((20, 20), np.uint8)
 gray = cv2.erode(gray, kernel, iterations=1)
 ```
 
+---
+
+## Transformación de Coordenadas
+
+Para convertir entre el mundo real y la imagen del mapa, se utiliza una transformación afín calculada mediante mínimos cuadrados:
+
+```python
+A = np.vstack([X, Y, np.ones(len(X))]).T
+a_params, _, _, _ = np.linalg.lstsq(A, U, rcond=None)
+b_params, _, _, _ = np.linalg.lstsq(A, V, rcond=None)
+T = np.vstack([a_params, b_params])
+```
+
+`world_to_pixel(x, y)` convierte coordenadas del mundo real a píxeles:
+```python
+def world_to_pixel(x, y):
+    vec = np.array([x, y, 1])
+    return T.dot(vec)
+```
+
+`pixel_to_world(u, v)` busca las coordenadas del mundo teniendo los del pixel:
+```python
+def pixel_to_world(u, v):
+    # Convertir T en 3x3
+    T_ext = np.vstack([T, [0, 0, 1]])
+    # Invertir
+    T_inv = np.linalg.inv(T_ext)
+    vec = np.array([u, v, 1])
+    res = T_inv.dot(vec)
+    return res[0], res[1]
+```
+
