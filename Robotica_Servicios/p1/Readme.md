@@ -79,3 +79,75 @@ def pixel_to_world(u, v):
     return res[0], res[1]
 ```
 
+---
+
+## Estado PLAN
+El estado PLAN es el encargado de construir el recorrido completo del robot por el entorno.
+Su objetivo es explorar todas las celdas libres mientras va marcando su progreso, detectando posibles caminos de retorno y gestionando los puntos críticos.
+
+La lógica general se puede dividir en tres grandes bloques:
+
+### 1. Marcado de celdas visitadas
+
+Cada vez que el robot entra en una nueva celda, la añade al plan y la marca como visitada:
+```python
+if cell not in plan:
+    plan.append(cell)
+    visited.add(cell)
+    paint_cell(cell[0], cell[1], FREE)
+```
+De esta forma, el robot lleva un registro de por dónde ha pasado y evita volver a las mismas celdas salvo que sea necesario para retornar.
+
+### 2. Expansión de vecinos
+
+A partir de la celda actual, se obtienen los vecinos libres (arriba, abajo, izquierda y derecha) que todavía no se han visitado:
+```python
+neighbors = [
+    (cell[0] + 1, cell[1]),
+    (cell[0], cell[1] + 1),
+    (cell[0] - 1, cell[1]),
+    (cell[0], cell[1] - 1)
+]
+
+free_neighbors = [
+    n for n in neighbors
+    if 0 <= n[0] < rows and 0 <= n[1] < cols
+    and not is_obstacle(n)
+    and n not in visited
+]
+```
+
+Si encuentra vecinos disponibles, avanza hacia el primero y guarda los demás como posibles celdas de retorno, marcándolas en azul:
+```python
+next_cell = free_neighbors[0]
+cell = next_cell
+plan.append(cell)
+visited.add(cell)
+paint_cell(cell[0], cell[1], FREE)
+
+for n in free_neighbors[1:]:
+    if n not in return_cells and n not in visited:
+        return_cells.append(n)
+        paint_cell(n[0], n[1], RETURN_CELL)
+
+```
+
+### 3. Manejo de retornos y puntos críticos
+Cuando una celda no tiene vecinos libres, se considera crítica, y el sistema busca una celda de retorno desde el stack return_cells.
+En ese caso, pasa al estado BFS_PLAN para planificar un camino hasta ella:
+```python
+paint_cell(cell[0], cell[1], CRITICAL_CELL)
+critical_cells.add(cell)
+
+if return_cells:
+    ret = return_cells.pop()
+    if ret not in visited:
+        origin_cell = cell
+        ret_target = ret
+        q = deque([cell])
+        parent = {cell: None}
+        seen = {cell}
+        state = BFS_PLAN
+```
+Si no quedan celdas de retorno, significa que el entorno ya se ha explorado completamente, y el plan pasa al estado MOVE para ejecutar el recorrido final.
+
