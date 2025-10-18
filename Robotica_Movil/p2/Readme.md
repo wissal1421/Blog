@@ -28,7 +28,49 @@ El control proporcional corrige la dirección según el error actual, el integra
 ANGULAR_VELOCITY_LIMIT = 4
 ```
 
+## Análisis de la imagen
+```python
+def analyze_image():
+    image = HAL.getImage()
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
+    mask1 = cv2.inRange(hsv_image, LOWER_RED_1, UPPER_RED_1)
+    mask2 = cv2.inRange(hsv_image, LOWER_RED_2, UPPER_RED_2)
+    red_mask = cv2.bitwise_or(mask1, mask2)
 
+    red_filtered = cv2.bitwise_and(image, image, mask=red_mask)
+    WebGUI.showImage(red_filtered)
 
-https://drive.google.com/file/d/1NV8W7KwN0Wq7s63KUYd_BSC5fKGeNKhO/view?usp=sharing
+    return red_mask, image.shape
+```
+Aquí convierto la imagen de la cámara a HSV, aplico las dos máscaras de rojo, y muestro una imagen de depuración para comprobar visualmente qué está detectando el robot.
+
+## Extracción del punto de referencia
+
+En lugar de analizar toda la imagen (que es costoso), busco la línea roja en una fila horizontal cercana al centro. Eso me da un punto de referencia para calcular el error respecto al centro:
+```python
+target_row = int(height / 2) + 10
+# Recorro columnas buscando píxeles rojos
+```
+Si no detecto línea en esa fila, activo una búsqueda profunda en toda la imagen como fallback.
+
+## Ajuste inteligente de velocidad
+
+Algo importante: no sirve de nada girar bien si el robot entra pasado de velocidad en una curva. Así que reduje la velocidad lineal según el error:
+```python
+v = MAX_V / (1 + 0.15 * abs(error))
+```
+
+## Lógica del bucle principal
+```python
+1. Capturar cámara
+2. Detectar rojo
+3. Si no hay rojo → buscar
+4. Calcular error
+5. Aplicar PID
+6. Ajustar velocidades
+```
+
+## Video de muestra
+
+[Accede para ver como se ejecuta el codigo :)](https://drive.google.com/file/d/1NV8W7KwN0Wq7s63KUYd_BSC5fKGeNKhO/view?usp=sharing)
