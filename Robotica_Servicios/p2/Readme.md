@@ -44,9 +44,40 @@ rot_matrix = cv.getRotationMatrix2D(center, angle, 1.0)
 
 ## Conversión de píxeles a coordenadas reales
 
+Detectar la cara es fácil. Lo difícil era convertir la posición del píxel donde se detecta la víctima a coordenadas reales del mapa. Para eso necesité conocer el campo de visión (FOV) real de la cámara ventral.
 
+### Cálculo real del FOV
 
+Probé hacerlo con datos teóricos de cámara, pero no coincidían con el simulador. Así que hice algo mejor:
 
+    1. Subí el dron a una altura conocida (5.5 metros).
+    
+    2. Medí en el simulador cuántos metros veía en horizontal y vertical. Resultado:
+    
+        · Ancho visible ≈ 6 metros
+        · Alto visible ≈ 4 metros
+        
+    3. Apliqué trigonometría inversa:
+
+```math
+    FOV = 2 \cdot \arctan\left(\frac{tamaño\_visible / 2}{altura}\right)
+```
+
+Asi obtuve unos valores para `CAMERA_FOV_X` y `CAMERA_FOV_Y`, sin embargo, al no ser exactos los valores de la anchura y altura que escogi, tuve que hacer algunas pruebas hasta dar con el mas adecuado.
+
+## Gestión de batería
+
+El dron nunca se queda tirado sin batería. Automáticamente regresa a base si baja del 20%:
+
+```python
+if battery_level < LOW_BATTERY_THRESHOLD:
+    state = GO_BACK
+```
+Dependiendo del número de iteraciones del algoritmo, el nivel de batería debería disminuir progresivamente. Si la lancha está demasiado lejos o el dron requiere muchas iteraciones para alcanzar el objetivo, es posible que no llegue a aterrizar por falta de batería.
+
+## Video de muestra
+
+[ACCEDER AL VIDEO](https://drive.google.com/file/d/171781H9LIfBmLJR4g09K8_iJNTM9c5MS/view?usp=sharing)
 
 
 
