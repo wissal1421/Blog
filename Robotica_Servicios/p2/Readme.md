@@ -27,3 +27,33 @@ Para detectar rostros humanos usamos Haar Cascade de OpenCV:
 face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
 faces = face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=8)
 ```
+
+Antes de detectar caras, filtro zonas azules (debido a las olas del mar) para evitar falsos positivos:
+
+```python
+mask_blue = cv.inRange(hsv, lower_blue, upper_blue)
+filtered = cv.bitwise_and(rotated_frame, rotated_frame, mask_not_blue)
+```
+
+También rotamos la imagen varias veces para detectar caras aunque estén ligeramente inclinadas, esto debido a que el algoritmo solo detecta caras cuando estan en vertical:
+
+```python
+for angle in range(0, 360, 20):
+rot_matrix = cv.getRotationMatrix2D(center, angle, 1.0)
+```
+
+## Conversión de píxeles a coordenadas reales
+
+
+
+
+
+
+
+
+
+
+
+
+
+
