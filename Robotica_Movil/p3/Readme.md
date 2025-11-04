@@ -54,6 +54,10 @@ angular_velocity = math.atan2(total_force[1], total_force[0])
 HAL.setV(linear_velocity)
 HAL.setW(angular_velocity)
 ```
+## Resultados
 
+El coche fue capaz de moverse por el circuito y alcanzar los distintos objetivos sin chocar con los obstáculos. Tuve que ajustar varias veces los parámetros de ganancia para lograr un movimiento más suave, ya que al principio el coche se movía de forma muy brusca o se quedaba atascado frente a los obstáculos.
+
+Aqui teneis un video del funcionamiento del algoritmo:
 
 
