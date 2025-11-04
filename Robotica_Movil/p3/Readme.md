@@ -40,3 +40,20 @@ for i in range(180):
     x = dist * math.cos(angle)
     y = dist * math.sin(angle)
 ```
+## Cálculo de las fuerzas
+
+Con toda la información, calculé la fuerza total como la suma de la fuerza atractiva (hacia el objetivo) y la repulsiva (lejos de los obstáculos).
+
+Después, a partir de esa fuerza total, obtuve la velocidad lineal (para avanzar) y la velocidad angular (para girar):
+
+```python
+linear_velocity = min(3.5, math.sqrt(total_force[0]**2 + total_force[1]**2))
+
+angular_velocity = math.atan2(total_force[1], total_force[0])
+
+HAL.setV(linear_velocity)
+HAL.setW(angular_velocity)
+```
+
+
+
