@@ -58,6 +58,6 @@ HAL.setW(angular_velocity)
 
 El coche fue capaz de moverse por el circuito y alcanzar los distintos objetivos sin chocar con los obstáculos. Tuve que ajustar varias veces los parámetros de ganancia para lograr un movimiento más suave, ya que al principio el coche se movía de forma muy brusca o se quedaba atascado frente a los obstáculos.
 
-Aqui teneis un video del funcionamiento del algoritmo:
+Aqui teneis un video del funcionamiento del algoritmo: [VIDEO](https://drive.google.com/file/d/1_2OXI9zncFBMm-CRpEgBFABR35-uNX0U/view?usp=sharing)
 
 
