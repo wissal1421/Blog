@@ -70,10 +70,54 @@ Este plan no es obligatorio (el robot puede navegar sin él), pero acelera la co
 Mostré este plan visualmente sobre el mapa para depuración, marcando el camino con valores intermedios.
 
 
+## 4. Pilotaje reactivo: convertir el gradiente en movimiento
 
+Tanto si hay plan como si no, el robot finalmente avanza de forma reactiva:
 
+1) Elige el siguiente punto a seguir (del plan o del gradiente local).
 
+2) Convierte ese punto a coordenadas del mundo.
 
+3) Calcula el ángulo deseado y ajusta velocidades lineales y angulares.
+
+```python
+
+desired_angle = atan2(goal_y - robot_y, goal_x - robot_x)
+angle_diff = normalize(desired_angle - robot_yaw)
+
+linear_speed = MAX_LINEAR_SPEED - abs(angle_diff)
+angular_speed = 3.0 * angle_diff
+
+HAL.setV(linear_speed)
+HAL.setW(angular_speed)
+
+```
+
+## 5. Esperar al siguiente detino una vez alcanzado el primero
+
+Una vez el coste es muy bajo (≈2), se considera alcanzado el objetivo. Entonces el robot se detiene y espera a que el usuario seleccione un nuevo punto del mapa.
+
+```python
+
+if cost_map[next_y, next_x] <= 2:
+    HAL.setV(0); HAL.setW(0)
+    esperar_nuevo_objetivo()
+
+```
+
+## 6. Vídeos demostrativos
+
+Para validar todo el sistema grabé dos ejecuciones:
+
+### 1. Navegación con planificación global
+
+El coche utiliza todo el campo escalar y sigue el camino reconstruido. [VIDEO](https://drive.google.com/file/d/1fhoZH3SQvsm44yd5XmOb3KHp8C82zFnJ/view?usp=sharing)
+
+### 2. Navegación reactiva sin plan
+
+Solo observa costes locales y sigue gradiente inmediato; más sencilla pero menos óptima. [VIDEO](https://drive.google.com/file/d/1bRRTOWKjDn-67kcSKT89Lckop98U-QeE/view?usp=sharing)
+
+Ambas muestran cómo el vehículo sortea obstáculos y toma calles hasta alcanzar el destino marcado.
 
 
 
