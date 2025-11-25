@@ -73,7 +73,39 @@ send_velocity(vx=v, vy=0, w=w)
 
 ```
 
+## El robot Ackermann
 
+El verdadero boss final de esta práctica, aquí cada decisión importa porque no puede moverse lateralmente y tiene un radio de giro limitado.
+
+### Espacio de estados Reeds-Shepp
+
+Para respetar las restricciones cinemáticas, utilicé Reeds-Shepp:
+
+```pyhton
+
+space = ob.ReedsSheppStateSpace(minTurningRadius=0.65)
+si = ob.SpaceInformation(space)
+si.setStateValidityChecker(is_valid_state)
+
+```
+
+Esto hace que los caminos que genera OMPL sean tipo coche, mezclando curvas, rectas y cambios de sentido.
+
+### Control de movimiento
+
+El control fue mucho más delicado que en el holonómico, tuve que implementar uno basado en el error lateral + error angular:
+
+```python
+
+max_w = 0.60
+w = max(-max_w, min(max_w, ang_error))
+
+# velocidad depende del error angular
+v = 0.3 * max(0.1, 1 - abs(ang_error))
+
+```
+
+El ajuste fino aquí me llevó bastante tiempo porque en el Ackermann un error angular pequeño te manda directo a una estantería. Además, la planificación es más lenta y sensible a los cambios en el mapa cuando el robot levanta racks.
 
 
 
