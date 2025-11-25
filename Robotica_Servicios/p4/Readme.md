@@ -107,7 +107,11 @@ v = 0.3 * max(0.1, 1 - abs(ang_error))
 
 El ajuste fino aquí me llevó bastante tiempo porque en el Ackermann un error angular pequeño te manda directo a una estantería. Además, la planificación es más lenta y sensible a los cambios en el mapa cuando el robot levanta racks.
 
+## Vídeos
 
+[Video de la ejecución del robot holonómico](https://drive.google.com/file/d/1pz4YzCGocoN-KpNmq6t0FtQge43LJ0BS/view?usp=sharing)
+
+[Video de la ejecución del robot Ackermann](https://drive.google.com/file/d/1DcwGWO8_eIsdC5PZpQpdUVUDDocy7lMd/view?usp=sharing)
 
 
 
