@@ -102,24 +102,24 @@ La prueba final del ejercicio era crucial: ver cómo la calidad del mapa se dete
 
 -    Localización (HAL.getOdom()): Proporciona la mejor estimación de la pose del robot (posición x,y y orientación yaw), asumiendo un ruido mínimo.
   
-      -    Resultado (Video 1): El mapa generado es muy preciso. Las paredes son líneas finas y paralelas, y el mapa se cierra correctamente.
+      -    Resultado ([Video 1](https://drive.google.com/file/d/1AgTVlvrm5EuBz9ynrYzy6jvAvopqb9ZI/view?usp=sharing)): El mapa generado es muy preciso. Las paredes son líneas finas y paralelas, y el mapa se cierra correctamente.
         ![IMAGEN 1](image_1.png)
 
 -    Odometría con Ruido 1 (HAL.getOdom2()): Simula un sensor de odometría con una cantidad moderada de ruido.
 
-      -    Resultado (Video 2): Se nota una deriva (drift) significativa. Las paredes paralelas se mapean como líneas dobles o "engordadas" porque el robot cree que está en un lugar cuando realmente está ligeramente en otro. El mapa se ve distorsionado y no se cierra correctamente en el origen.
+      -    Resultado ([Video 2](https://drive.google.com/file/d/1CRkwbE45OmtG3ZTdTtMiy8F_VfL1UP_T/view?usp=sharing)): Se nota una deriva (drift) significativa. Las paredes paralelas se mapean como líneas dobles o "engordadas" porque el robot cree que está en un lugar cuando realmente está ligeramente en otro. El mapa se ve distorsionado y no se cierra correctamente en el origen.
         ![IMAGEN 2](image_2.png)
 
 -    Odometría con Ruido 2 (HAL.getOdom3()): Simula un alto nivel de ruido en la odometría.
 
-      -    Resultado (Video 3): El mapa se deteriora rápidamente. Las líneas de las paredes se vuelven borrosas o se duplican drásticamente, haciendo que el mapa sea inútil para la navegación. Esto demuestra la extrema sensibilidad del mapeo de ocupación a la precisión de la localización. Si la pose es incorrecta, la evidencia del sensor se registra en el lugar equivocado, destruyendo la consistencia del mapa.
+      -    Resultado ([Video 3](https://drive.google.com/file/d/1i7A-gsUVMDDLCxqmTX-E0Ssl3gc120Ij/view?usp=sharing)): El mapa se deteriora rápidamente. Las líneas de las paredes se vuelven borrosas o se duplican drásticamente, haciendo que el mapa sea inútil para la navegación. Esto demuestra la extrema sensibilidad del mapeo de ocupación a la precisión de la localización. Si la pose es incorrecta, la evidencia del sensor se registra en el lugar equivocado, destruyendo la consistencia del mapa.
         ![IMAGEN 3](image_3.png)
 
 Este ejercicio ilustró perfectamente que "un buen mapa requiere una buena localización." Si la fuente de localización (en este caso, la odometría) es ruidosa, ningún algoritmo de mapeo, por sofisticado que sea (como el bayesiano que usamos), puede generar un mapa preciso.
 
 
 
-
+[Video 1](https://drive.google.com/file/d/1AgTVlvrm5EuBz9ynrYzy6jvAvopqb9ZI/view?usp=sharing)
 
 
 
