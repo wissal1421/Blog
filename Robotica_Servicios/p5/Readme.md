@@ -4,7 +4,9 @@
 Este ejercicio consiste en construir el Mapa de Ocupación Probabilístico (GridMap) de una nave industrial simulada. Este proyecto combina la navegación autónoma con la fusión sensorial avanzada, utilizando el sensor lidar del robot y su propia localización.
 
 Los objetivos son:
+
 1)  Exploración: Programar un algoritmo para que el robot se mueva deambulando por el entorno hasta cubrir su totalidad.
+
 2)  Mapeo Probabilístico: Implementar el algoritmo de construcción del GridMap utilizando la Regla de Bayes y mecanismos de saturación para manejar la incertidumbre de los sensores.
 
 ## Estrategia de Exploración: Navegación Serpenteante Inteligente
@@ -94,9 +96,22 @@ Mi función update_probabilistic_gui() convierte los valores de Log-Odds a proba
 
 -  P = 0.0 (Libre) --> Blanco (255)
 
+## Impacto de las distintas Odometrías
 
+La prueba final del ejercicio era crucial: ver cómo la calidad del mapa se deteriora al usar fuentes de localización con mayor ruido.
 
+-    Localización (HAL.getOdom()): Proporciona la mejor estimación de la pose del robot (posición x,y y orientación yaw), asumiendo un ruido mínimo.
+      -    Resultado (Video 1 / Imagen 1): El mapa generado es muy preciso. Las paredes son líneas finas y paralelas, y el mapa se cierra correctamente.
 
+-    Odometría con Ruido 1 (HAL.getOdom2()): Simula un sensor de odometría con una cantidad moderada de ruido.
+
+      -    Resultado (Video 2 / Imagen 2): Se nota una deriva (drift) significativa. Las paredes paralelas se mapean como líneas dobles o "engordadas" porque el robot cree que está en un lugar cuando realmente está ligeramente en otro. El mapa se ve distorsionado y no se cierra correctamente en el origen.
+
+-    Odometría con Ruido 2 (HAL.getOdom3()): Simula un alto nivel de ruido en la odometría.
+
+      -    Resultado (Video 3 / Imagen 3): El mapa se deteriora rápidamente. Las líneas de las paredes se vuelven borrosas o se duplican drásticamente, haciendo que el mapa sea casi inútil para la navegación. Esto demuestra la extrema sensibilidad del mapeo de ocupación a la precisión de la localización. Si la pose es incorrecta, la evidencia del sensor se registra en el lugar equivocado, destruyendo la consistencia del mapa.
+
+Este ejercicio ilustró perfectamente que "un buen mapa requiere una buena localización." Si la fuente de localización (en este caso, la odometría) es ruidosa, ningún algoritmo de mapeo, por sofisticado que sea (como el bayesiano que usamos), puede generar un mapa preciso.
 
 
 
