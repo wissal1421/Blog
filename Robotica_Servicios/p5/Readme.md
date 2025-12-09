@@ -119,23 +119,3 @@ Este ejercicio ilustró perfectamente que "un buen mapa requiere una buena local
 
 
 
-[Video 1](https://drive.google.com/file/d/1AgTVlvrm5EuBz9ynrYzy6jvAvopqb9ZI/view?usp=sharing)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
