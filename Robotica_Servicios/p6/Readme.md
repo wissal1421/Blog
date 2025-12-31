@@ -71,12 +71,6 @@ HAL.setV(lin_speed)
 
 El sistema demuestra robustez frente a la pérdida temporal de contacto visual con las balizas, manteniendo una estimación de pose coherente mediante la integración de deltas de odometría. La precisión aumenta significativamente al re-entrar en el campo de visión de un AprilTag, donde el error de deriva se resetea a cero.
 
-A continuación, se adjunta una demostración en vídeo del sistema en ejecución, donde se observa la convergencia de la pose estimada (marcador rojo) con la posición real del robot en el entorno de simulación.
+A continuación, se adjunta una demostración en vídeo del sistema en ejecución, donde se observa la convergencia de la pose estimada (marcador rojo) con la posición real del robot en el entorno de simulación:
 
-[Vídeo]()
-https://drive.google.com/file/d/1S63AcW_s-0kkW183hWTw397k0h4xhMRA/view?usp=sharing
-
-
-
-
-      -    Resultado ([Video 2](https://drive.google.com/file/d/1CRkwbE45OmtG3ZTdTtMiy8F_VfL1UP_T/view?usp=sharing)): Se nota una deriva (drift) significativa. Las paredes paralelas se mapean como líneas dobles o "engordadas" porque el robot cree que está en un lugar cuando realmente está ligeramente en otro. El mapa se ve distorsionado y no se cierra correctamente en el origen.
+[Vídeo](https://drive.google.com/file/d/1S63AcW_s-0kkW183hWTw397k0h4xhMRA/view?usp=sharing)
