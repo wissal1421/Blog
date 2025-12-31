@@ -52,6 +52,31 @@ y_e += dy
 yaw_e = normalize_angle(yaw_e + dyaw)
 ```
 
+## Control de Navegación Reactiva
 
+El robot opera bajo una Máquina de Estados Finitos (FSM) con dos estados principales:
 
+-  FORWARD: Control de velocidad mediante un PID lineal que toma como error la distancia medida por el sensor LIDAR frente al `THRESHOLD_WALL`.
+
+-  TURN: Activado por proximidad a obstáculos o por un temporizador (random.uniform). La dirección de giro se determina de forma aleatoria para maximizar la exploración del área.
+
+```python
+# Control de velocidad lineal mediante PID
+dist_error = front_dist - THRESHOLD_WALL
+lin_speed = pid_lineal(dist_error)
+HAL.setV(lin_speed)
+```
+
+## Resultados y Demostración
+
+El sistema demuestra robustez frente a la pérdida temporal de contacto visual con las balizas, manteniendo una estimación de pose coherente mediante la integración de deltas de odometría. La precisión aumenta significativamente al re-entrar en el campo de visión de un AprilTag, donde el error de deriva se resetea a cero.
+
+A continuación, se adjunta una demostración en vídeo del sistema en ejecución, donde se observa la convergencia de la pose estimada (marcador rojo) con la posición real del robot en el entorno de simulación.
+
+[Vídeo]()
 https://drive.google.com/file/d/1S63AcW_s-0kkW183hWTw397k0h4xhMRA/view?usp=sharing
+
+
+
+
+      -    Resultado ([Video 2](https://drive.google.com/file/d/1CRkwbE45OmtG3ZTdTtMiy8F_VfL1UP_T/view?usp=sharing)): Se nota una deriva (drift) significativa. Las paredes paralelas se mapean como líneas dobles o "engordadas" porque el robot cree que está en un lugar cuando realmente está ligeramente en otro. El mapa se ve distorsionado y no se cierra correctamente en el origen.
