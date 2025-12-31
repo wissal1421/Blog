@@ -32,10 +32,25 @@ w2c = np.dot(w2m, m2c_adj)
 yaw_est = float(np.arctan2(w2c[1, 0], w2c[0, 0]))
 ```
 
+## Fusión de Datos
 
+Debido a que la odometría absoluta de `HAL.getOdom()` presenta un ruido gaussiano acumulativo, se implementó una lógica de actualización por incrementos.
 
+-  Corrección: Cuando hay una detección válida, la pose estimada se sobrescribe con el cálculo visual.
 
+-  Predicción: En ausencia de etiquetas, se calcula el diferencial (Δx,Δy,Δθ) entre el estado de odometría actual y el anterior, sumándolo a la última pose estimada válida.
 
+```python
+# Cálculo de incrementos (Deltas)
+dx = odom.x - x_l
+dy = odom.y - y_l
+dyaw = normalize_angle(odom.yaw - yaw_l)
+
+# Integración sobre la última estimación conocida
+x_e += dx
+y_e += dy
+yaw_e = normalize_angle(yaw_e + dyaw)
+```
 
 
 
